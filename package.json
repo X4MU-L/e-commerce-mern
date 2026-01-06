@@ -1,0 +1,28 @@
+{
+  "name": "mern-ecommerce",
+  "version": "1.0.0",
+  "description": "MERN E-Commerce Application - Combined Deployment",
+  "main": "backend/index.js",
+  "scripts": {
+    "start": "cd backend && npm start",
+    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm start\"",
+    "build": "cd backend && npm install && cd ../frontend && npm install && npm run build",
+    "install-all": "cd backend && npm install && cd ../frontend && npm install",
+    "seed": "cd backend && npm run seed",
+    "deploy": "npm run build && npm start"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "keywords": [
+    "ecommerce",
+    "mern",
+    "react",
+    "mongodb",
+    "express",
+    "nodejs"
+  ],
+  "author": "",
+  "license": "ISC"
+}

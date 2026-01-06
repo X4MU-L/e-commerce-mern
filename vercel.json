@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "backend/index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "backend/index.js"
+    },
+    {
+      "src": "/auth/(.*)",
+      "dest": "backend/index.js"
+    },
+    {
+      "src": "/users/(.*)",
+      "dest": "backend/index.js"
+    },
+    {
+      "src": "/products/(.*)",
+      "dest": "backend/index.js"
+    },
+    {
+      "src": "/orders/(.*)",
+      "dest": "backend/index.js"
+    },
+    {
+      "src": "/cart/(.*)",
+      "dest": "backend/index.js"
+    },
+    {
+      "src": "/brands/(.*)",
+      "dest": "backend/index.js"
+    },
+    {
+      "src": "/categories/(.*)",
+      "dest": "backend/index.js"
+    },
+    {
+      "src": "/address/(.*)",
+      "dest": "backend/index.js"
+    },
+    {
+      "src": "/reviews/(.*)",
+      "dest": "backend/index.js"
+    },
+    {
+      "src": "/wishlist/(.*)",
+      "dest": "backend/index.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "backend/index.js"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
