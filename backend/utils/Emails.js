@@ -1,17 +1,11 @@
 const axios = require("axios");
 
-exports.sendMail = async (receiverEmail, subject, body) => {
-  console.log(
-    "Sending email to:",
-    receiverEmail,
-    `from ${process.env.FROM_EMAIL}`
-  );
-
+exports.sendMail = async (receiverEmail, subject, body, isHtml = true) => {
   const data = {
-    from: `Name <shop@${process.env.FROM_EMAIL}>`,
+    from: `${process.env.FROM_NAME} <shop@${process.env.FROM_EMAIL}>`,
     to: receiverEmail,
     subject: subject,
-    html: body,
+    ...(isHtml ? { html: body } : { text: body }),
   };
 
   try {
@@ -23,7 +17,7 @@ exports.sendMail = async (receiverEmail, subject, body) => {
       timeout: 15000, // 15 second timeout
     });
 
-    console.log("✅ Email sent successfully:", response.data);
+    console.log("✅ Email sent successfully:", response.data?.status);
     return response.data;
   } catch (error) {
     console.error(
