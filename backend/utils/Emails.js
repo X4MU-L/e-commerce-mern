@@ -1,38 +1,37 @@
-const nodemailer = require("nodemailer");
-
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: parseInt(process.env.SMTP_PORT) || 587,
-  secure: false, // true for 465, false for 587
-  requireTLS: true, // Force TLS for port 587
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-  // Cloud platform optimizations
-  connectionTimeout: 15000,
-  greetingTimeout: 15000,
-  socketTimeout: 15000,
-  // Mumara-specific settings
-  tls: {
-    rejectUnauthorized: false, // Accept self-signed certificates
-    minVersion: "TLSv1.2",
-  },
-});
+const axios = require("axios");
 
 exports.sendMail = async (receiverEmail, subject, body) => {
   console.log(
     "Sending email to:",
     receiverEmail,
-    `${process.env.FROM_NAME} okoli@${process.env.FROM_EMAIL}`
+    `from ${process.env.FROM_EMAIL}`
   );
-  await transporter.sendMail({
-    from: {
-      name: process.env.FROM_NAME,
-      address: `okoli@${process.env.FROM_EMAIL}`,
-    },
+
+  const data = {
+    from: `Name <shop@${process.env.FROM_EMAIL}>`,
     to: receiverEmail,
     subject: subject,
     html: body,
-  });
+  };
+
+  try {
+    const response = await axios.post(process.env.MAIL_API_URL, data, {
+      headers: {
+        Authorization: `Bearer ${process.env.MAIL_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      timeout: 15000, // 15 second timeout
+    });
+
+    console.log("✅ Email sent successfully:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "❌ Email sending failed:",
+      error.response?.data || error.message
+    );
+    throw new Error(
+      `Failed to send email: ${error.response?.data?.message || error.message}`
+    );
+  }
 };
